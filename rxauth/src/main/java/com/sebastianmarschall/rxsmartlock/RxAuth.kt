@@ -6,7 +6,9 @@ import android.os.Parcelable
 import com.google.android.gms.auth.api.credentials.Credential
 import com.google.android.gms.auth.api.credentials.CredentialPickerConfig
 import com.google.android.gms.auth.api.credentials.CredentialRequest
+import com.sebastianmarschall.rxsmartlock.observable.DeleteCredentialObservable
 import com.sebastianmarschall.rxsmartlock.observable.RetrieveCredentialObservable
+import com.sebastianmarschall.rxsmartlock.observable.StoreCredentialObservable
 import io.reactivex.Single
 
 class RxAuth private constructor(builder: Builder) {
@@ -25,6 +27,14 @@ class RxAuth private constructor(builder: Builder) {
 
     fun retrieveCredentialFromIntent(data: Intent): Single<Credential> {
         return Single.just(data.getParcelableExtra<Parcelable>(Credential.EXTRA_KEY) as Credential)
+    }
+
+    fun storeCredentials(credential: Credential): Single<Boolean> {
+        return Single.create(StoreCredentialObservable(context, credential))
+    }
+
+    fun deleteCredential(credential: Credential): Single<Boolean> {
+        return Single.create(DeleteCredentialObservable(context, credential))
     }
 
     class Builder(val context: Context) {
