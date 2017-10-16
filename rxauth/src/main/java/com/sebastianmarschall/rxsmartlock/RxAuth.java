@@ -1,6 +1,7 @@
 package com.sebastianmarschall.rxsmartlock;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.CredentialPickerConfig;
@@ -8,6 +9,7 @@ import com.google.android.gms.auth.api.credentials.CredentialRequest;
 import com.sebastianmarschall.rxsmartlock.observable.RetrieveCredentialObservable;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class RxAuth {
 
@@ -20,8 +22,12 @@ public class RxAuth {
         credentialRequest = builder.getCredentialRequestBuilder().build();
     }
 
-    public Observable<Credential> retrieveCredentials() {
-        return Observable.create(new RetrieveCredentialObservable(context, credentialRequest));
+    public Single<Credential> retrieveCredentials() {
+        return Single.create(new RetrieveCredentialObservable(context, credentialRequest));
+    }
+
+    public Single<Credential> retrieveCredentialFromIntent(Intent data) {
+        return Single.just((Credential) data.getParcelableExtra(Credential.EXTRA_KEY));
     }
 
     public static class Builder {

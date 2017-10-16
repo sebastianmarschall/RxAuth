@@ -17,11 +17,11 @@ import com.sebastianmarschall.rxsmartlock.exception.ConnectionException;
 import com.sebastianmarschall.rxsmartlock.exception.ConnectionSuspendedException;
 import com.sebastianmarschall.rxsmartlock.exception.StatusException;
 
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.functions.Cancellable;
 
-public class RetrieveCredentialObservable implements ObservableOnSubscribe<Credential> {
+public class RetrieveCredentialObservable implements SingleOnSubscribe<Credential> {
 
     private Context mContext;
     private CredentialRequest mCredentialRequest;
@@ -32,7 +32,7 @@ public class RetrieveCredentialObservable implements ObservableOnSubscribe<Crede
     }
 
     @Override
-    public void subscribe(ObservableEmitter<Credential> subscriber) throws Exception {
+    public void subscribe(SingleEmitter<Credential> subscriber) throws Exception {
 
         final GoogleApiClient googleApiClient = buildGoogleApiClient(subscriber);
 
@@ -52,8 +52,7 @@ public class RetrieveCredentialObservable implements ObservableOnSubscribe<Crede
         });
     }
 
-
-    private GoogleApiClient buildGoogleApiClient(ObservableEmitter<? super Credential> observer) {
+    private GoogleApiClient buildGoogleApiClient(SingleEmitter<? super Credential> observer) {
 
         GoogleApiClientCallbacks clientCallbacks = new GoogleApiClientCallbacks(observer);
         GoogleApiClient client = new GoogleApiClient.Builder(mContext)
@@ -70,9 +69,9 @@ public class RetrieveCredentialObservable implements ObservableOnSubscribe<Crede
             GoogleApiClient.OnConnectionFailedListener, ResultCallback<CredentialRequestResult> {
 
         private GoogleApiClient googleApiClient;
-        private ObservableEmitter<? super Credential> subscriber;
+        private SingleEmitter<? super Credential> subscriber;
 
-        public GoogleApiClientCallbacks(ObservableEmitter<? super Credential> observer) {
+        public GoogleApiClientCallbacks(SingleEmitter<? super Credential> observer) {
             subscriber = observer;
         }
 
@@ -111,8 +110,7 @@ public class RetrieveCredentialObservable implements ObservableOnSubscribe<Crede
         }
 
         private void onCredentialRetrieved(Credential credential) {
-            subscriber.onNext(credential);
-            subscriber.onComplete();
+            subscriber.onSuccess(credential);
         }
 
         private void resolveResult(Status status) {

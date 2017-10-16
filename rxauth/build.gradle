@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 26
 
     }
     buildTypes {
@@ -18,8 +18,8 @@ android {
 }
 
 dependencies {
-    compile "io.reactivex.rxjava2:rxjava:2.0.7"
-    compile "com.google.android.gms:play-services-auth:10.2.0"
+    compile "io.reactivex.rxjava2:rxjava:2.1.0"
+    compile "com.google.android.gms:play-services-auth:11.4.2"
 
     testCompile 'junit:junit:4.12'
 }
