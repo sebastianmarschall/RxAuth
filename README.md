@@ -12,6 +12,10 @@ dependencies {
 }
 ```
 
+## Additional Notes
+
+This library is strongly inspired by the [RxSmartLock][2] but is written in Kotlin and uses RxJava2.
+
 ## License
 
 ```
