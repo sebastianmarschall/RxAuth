@@ -31,6 +31,10 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType(Javadoc).all {
+    failOnError = false
+}
+
 /*
 apply plugin: 'maven'
 uploadArchives {
