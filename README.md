@@ -8,7 +8,7 @@ Reactive Auth APIs Wrapper Library for Google's [Smart Lock for Passwords API][1
 Add this to your **build.gradle** file:
 ```java
 dependencies {
-     compile 'com.sebastianmarschall:rxauth:0.1.1'
+     compile 'com.sebastianmarschall:rxauth:0.2.0'
 }
 ```
 
