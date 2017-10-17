@@ -2,13 +2,83 @@
 Reactive Auth APIs Wrapper Library for Google's [Smart Lock for Passwords API][1].
 
 [![API](https://img.shields.io/badge/API-14%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=14)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RxAuth-orange.svg?style=true)](https://android-arsenal.com/details/1/6342)
+
+## Usage
+
+### Build RxAuth object
+
+```java
+val rxAuth = RxAuth.Builder(context).setPasswordLoginSupported(true).setAccountTypes(IdentityProviders.GOOGLE).build()
+```
+
+### Retrieve Credentials
+```java
+rxAuth.retrieveCredentials().subscribe({
+          // use Credential to sign in into your app
+        }, {
+            if (it is StatusException) {
+                if (it.status.hasResolution()) {
+                    try {
+                        it.status.startResolutionForResult(activity, CREDENTIAL_REQUEST_RC)
+                    } catch (e1: IntentSender.SendIntentException) {
+                        Log.e(TAG, "RxAuth: Failed to send resolution.")
+                    }
+
+                } else {
+                     // The user must create an account or sign in manually.
+                     Log.e(TAG, "RxAuth: Unsuccessful credential request.");
+                }
+            }
+        })
+```
+
+Watch for a StatusException in the onError() callback. When the user has stored more than one Credential `Status.hasResolution()` returns `true`. In this case call `startResolutionForResult()` to prompt the user to choose an account. You will get the chosen credentials in the activity's `onActivityResult()` method by calling the `retrieveCredentialFromIntent(Intent)` method on the `RxAuth` object that you created.
+
+```java
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+   super.onActivityResult(requestCode, resultCode, data)
+   if (requestCode == CREDENTIAL_REQUEST_RC) {
+       if (resultCode == RESULT_OK) {
+           rxAuth.retrieveCredentialFromIntent(data).subscribe({ credentials ->
+               // use Credential to sign in into your app
+           })
+       }
+   }
+}
+```
+
+### Store Credentials
+```java
+rxAuth.storeCredentials().subscribe( .... )
+```
+
+In case the credentials are new the user must confirm the store request. Again watch for a StatusException in the onError() callback. Resolve the save request with `startResolutionForResult()` to prompt the user for confirmation.
+
+```java
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+   super.onActivityResult(requestCode, resultCode, data)
+   if (requestCode == CREDENTIAL_STORE_RC) {
+       if (resultCode == RESULT_OK) {
+           Log.d(TAG, "RxAuth: user stored credentials")
+       } else {
+           Log.d(TAG, "RxAuth: user canceled storing credentials")
+       }
+   }
+}
+```
+
+### Delete Credentials
+```java
+rxAuth.deleteCredential().subscribe( .... )
+```
 
 ## Add RxAuth To Your Project
 
 Add this to your **build.gradle** file:
 ```java
 dependencies {
-     compile 'com.sebastianmarschall:rxauth:0.2.0'
+     compile 'com.sebastianmarschall:rxauth:0.3.1'
 }
 ```
 
