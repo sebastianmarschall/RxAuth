@@ -34,7 +34,7 @@ rxAuth.retrieveCredentials().subscribe({
         })
 ```
 
-Watch for a StatusException in the onError() callback. When the user has stored more than one Credential `Status.hasResolution()` returns `true`. In this case call `startResolutionForResult()` to prompt the user to choose an account. You will get the chosen credentials in the activity's `onActivityResult()` method by calling the `retrieveCredentialFromIntent(Intent)` method on the `RxAuth` object that you created.
+Watch for a StatusException in the onError() callback. When the user has stored more than one Credential `Status.hasResolution()` returns `true`. In this case call `startResolutionForResult()` to prompt the user to choose an account. You will get the chosen credentials in the activity's `onActivityResult()` method by calling the `retrieveCredentialFromIntent(Intent)` method on the `RxAuth` object that you created:
 
 ```java
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -67,7 +67,7 @@ rxAuth.storeCredentials(credential).subscribe({
 })
 ```
 
-In case the credentials are new the user must confirm the store request. Again watch for a StatusException in the onError() callback. Resolve the save request with `startResolutionForResult()` to prompt the user for confirmation. The activity's `onActivityResult()` notifies if the user confirmed the store request.
+In case the credentials are new, the user must confirm the store request. Again watch for a StatusException in the onError() callback. Resolve the save request with `startResolutionForResult()` to prompt the user for confirmation. The activity's `onActivityResult()` notifies if the user confirmed the store request:
 
 ```java
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -86,7 +86,7 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
 ```java
 rxAuth.deleteCredential(credential).subscribe({
             if(it) {
-               // credential has been deleted
+               // Credential has been deleted
             }
         },{
             Log.e(TAG, "RxAuth: error while deleting credentials")
