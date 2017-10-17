@@ -1,9 +1,9 @@
-# RxSmartLock
+# RxAuth
 Reactive Auth APIs Wrapper Library for Google's [Smart Lock for Passwords API][1].
 
 [![API](https://img.shields.io/badge/API-14%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=14)
 
-## Add RxSmartLock To Your Project
+## Add RxAuth To Your Project
 
 Add this to your **build.gradle** file:
 ```java
