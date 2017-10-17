@@ -51,10 +51,23 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
 
 ### Store Credentials
 ```java
-rxAuth.storeCredentials().subscribe( .... )
+rxAuth.storeCredentials(credential).subscribe({
+  Log.d(TAG, "stored credentials")
+}, {
+  if (it is StatusException) {
+      if (it.status.hasResolution()) {
+          try {
+              it.status.startResolutionForResult(activity, CREDENTIAL_STORE_RC)
+          } catch (e1: IntentSender.SendIntentException) {
+              Log.e(TAG, "STATUS: Failed to send resolution.")
+          }
+
+      }
+  }
+})
 ```
 
-In case the credentials are new the user must confirm the store request. Again watch for a StatusException in the onError() callback. Resolve the save request with `startResolutionForResult()` to prompt the user for confirmation.
+In case the credentials are new the user must confirm the store request. Again watch for a StatusException in the onError() callback. Resolve the save request with `startResolutionForResult()` to prompt the user for confirmation. The activity's `onActivityResult()` notifies if the user confirmed the store request.
 
 ```java
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -71,7 +84,13 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
 
 ### Delete Credentials
 ```java
-rxAuth.deleteCredential().subscribe( .... )
+rxAuth.deleteCredential(credential).subscribe({
+            if(it) {
+               // credential has been deleted
+            }
+        },{
+            Log.e(TAG, "RxAuth: error while deleting credentials")
+        })
 ```
 
 ## Add RxAuth To Your Project
@@ -107,3 +126,4 @@ limitations under the License.
 
  [1]: https://developers.google.com/identity/smartlock-passwords/android/
  [2]: https://github.com/ShlMlkzdh/RxSmartLock
+          
