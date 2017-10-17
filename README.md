@@ -3,6 +3,7 @@ Reactive Auth APIs Wrapper Library for Google's [Smart Lock for Passwords API][1
 
 [![API](https://img.shields.io/badge/API-14%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RxAuth-orange.svg?style=true)](https://android-arsenal.com/details/1/6342)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.sebastianmarschall/rxauth/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.sebastianmarschall/rxauth)
 
 ## Usage
 
